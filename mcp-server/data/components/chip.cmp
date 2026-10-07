@@ -1,0 +1,91 @@
+id: chip
+name: Chips (assist, filter, input, suggestion)
+category: actions
+summary: Compact 32dp controls. Filter chips toggle and show a check when selected.
+requires: foundation
+@@spec
+- Height 32dp, shape small (8dp). A chip is a rounded rectangle, not a pill (a pill is a button).
+- Label Large. Padding 16dp, 8dp on the side that has an icon.
+- Filter chip selected: secondary-container fill, check icon, no outline. Unselected: 1px outline.
+- Group related chips in a set with an aria-label. Wrap on narrow widths rather than scroll.
+- Touch target is 48dp tall through the ::after hit area.
+@@a11y
+- A filter chip is a <button aria-pressed>. Every chip in the set carries aria-pressed, updated wherever selection changes.
+- An assist or suggestion chip is a plain button or link with a visible label.
+- The leading check icon is aria-hidden.
+@@html
+<div class="md-chip-set" role="group" aria-label="Asset class">
+  <button class="md-chip" type="button" aria-pressed="true">
+    <span class="md-icon md-chip__check" aria-hidden="true">check</span>
+    Metals
+  </button>
+  <button class="md-chip" type="button" aria-pressed="false">Energy</button>
+  <button class="md-chip" type="button" aria-pressed="false">Crypto</button>
+</div>
+@@css
+.md-chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-sm);
+}
+
+.md-chip {
+  --_bg: transparent;
+  --_c: var(--md-on-surface-variant);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  min-height: 2rem;
+  padding: 0 var(--sp-lg);
+  border: 0.0625rem solid var(--md-outline);
+  border-radius: var(--shape-sm);
+  background-color: var(--_bg);
+  color: var(--_c);
+  font-family: var(--md-font-plain);
+  font-size: var(--md-type-label-large-size);
+  font-weight: var(--md-type-label-large-weight);
+  line-height: var(--md-type-label-large-line);
+  letter-spacing: var(--md-type-label-large-tracking);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects),
+    border-radius var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial);
+}
+
+/* 48dp touch target without growing the visible chip */
+.md-chip::after {
+  content: "";
+  position: absolute;
+  inset: -0.5rem 0;
+}
+
+.md-chip .md-icon { font-size: 1.125rem; }
+.md-chip__check { display: none; }
+
+.md-chip:hover  { background-color: color-mix(in srgb, var(--_c) 8%, var(--_bg)); }
+.md-chip:focus-visible { background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg)); }
+.md-chip:active { border-radius: var(--shape-md); }
+
+.md-chip[aria-pressed="true"] {
+  --_bg: var(--md-secondary-container);
+  --_c: var(--md-on-secondary-container);
+  padding-inline-start: var(--sp-sm);
+  border-color: transparent;
+}
+.md-chip[aria-pressed="true"] .md-chip__check { display: inline-block; }
+
+.md-chip:disabled {
+  border-color: color-mix(in srgb, var(--md-on-surface) 12%, transparent);
+  color: color-mix(in srgb, var(--md-on-surface) 38%, transparent);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+@@js
+// Multi-select filter chips. For single-select, clear the others before setting the clicked one.
+document.addEventListener('click', function (ev) {
+  var chip = ev.target.closest('.md-chip-set > .md-chip[aria-pressed]');
+  if (!chip) return;
+  chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
+});

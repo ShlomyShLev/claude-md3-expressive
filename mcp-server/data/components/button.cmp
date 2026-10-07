@@ -1,0 +1,112 @@
+id: button
+name: Buttons (filled, tonal, elevated, outlined, text, toggle)
+category: actions
+summary: Pill buttons with five styles, five sizes, a shape morph on press and a toggle state that morphs the shape.
+requires: foundation
+@@spec
+- Label Large (14sp, weight 500). Container 40dp default; xs 32dp, md 56dp, lg 96dp.
+- Shape is full (pill) at rest and morphs to medium on press. A selected toggle holds the medium shape.
+- Horizontal padding 24dp (16dp for text buttons and xs).
+- State layer: hover 8%, focus and pressed 10%, via color-mix of the content color over the container.
+- Disabled: container 12% of on-surface, content 38%.
+- Primary action per screen: one filled button. Secondary actions use tonal or outlined.
+@@a11y
+- A real <button type="button"> (or <a> for navigation). Visible text is the name.
+- Icon-only buttons use .md-icon-btn with aria-label, not this component.
+- A toggle uses aria-pressed on every button in its group. A button that opens a dialog uses aria-haspopup="dialog", never aria-pressed.
+- Disabled: use the disabled attribute (or aria-disabled="true" on a link).
+@@html
+<button class="md-btn md-btn--filled" type="button">Save</button>
+<button class="md-btn md-btn--tonal" type="button">
+  <span class="md-icon" aria-hidden="true">add</span>
+  New item
+</button>
+<button class="md-btn md-btn--outlined" type="button">Cancel</button>
+<button class="md-btn md-btn--text" type="button">Learn more</button>
+<button class="md-btn md-btn--elevated" type="button">Elevated</button>
+
+<!-- toggle: aria-pressed is the programmatic twin of the selected look -->
+<button class="md-btn md-btn--tonal" type="button" aria-pressed="false">Favorite</button>
+
+<!-- opens a dialog -->
+<button class="md-btn md-btn--filled" type="button" aria-haspopup="dialog" data-md-dialog-open="confirm-dialog">Delete</button>
+@@css
+.md-btn {
+  --_bg: transparent;
+  --_c: var(--md-primary);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-sm);
+  min-height: 2.5rem;
+  padding: 0 var(--sp-xl);
+  border: 0;
+  border-radius: var(--shape-full);
+  background-color: var(--_bg);
+  color: var(--_c);
+  font-family: var(--md-font-plain);
+  font-size: var(--md-type-label-large-size);
+  font-weight: var(--md-type-label-large-weight);
+  line-height: var(--md-type-label-large-line);
+  letter-spacing: var(--md-type-label-large-tracking);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects),
+    box-shadow var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects),
+    border-radius var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial);
+}
+
+.md-btn .md-icon { font-size: 1.125rem; }
+
+.md-btn--filled   { --_bg: var(--md-primary);             --_c: var(--md-on-primary); }
+.md-btn--tonal    { --_bg: var(--md-secondary-container); --_c: var(--md-on-secondary-container); }
+.md-btn--elevated { --_bg: var(--md-surface-1);           --_c: var(--md-primary); box-shadow: var(--md-elev-1); }
+.md-btn--outlined { border: 0.0625rem solid var(--md-outline); }
+.md-btn--text     { padding: 0 var(--sp-lg); }
+
+.md-btn--xs { min-height: 2rem; padding: 0 var(--sp-lg); }
+.md-btn--md {
+  min-height: 3.5rem;
+  font-size: var(--md-type-title-medium-size);
+  line-height: var(--md-type-title-medium-line);
+}
+.md-btn--lg {
+  min-height: 6rem;
+  padding: 0 3rem;
+  font-size: var(--md-type-headline-small-size);
+  line-height: var(--md-type-headline-small-line);
+}
+
+.md-btn:hover  { background-color: color-mix(in srgb, var(--_c) 8%, var(--_bg)); }
+.md-btn:focus-visible { background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg)); }
+.md-btn:active {
+  background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg));
+  border-radius: var(--shape-md);
+}
+
+.md-btn--elevated:hover { box-shadow: var(--md-elev-2); }
+
+/* toggle: selected holds the squarer shape and the filled colors */
+.md-btn[aria-pressed="true"] {
+  --_bg: var(--md-primary);
+  --_c: var(--md-on-primary);
+  border-radius: var(--shape-md);
+}
+.md-btn--outlined[aria-pressed="true"] { border-color: transparent; }
+
+.md-btn:disabled,
+.md-btn[aria-disabled="true"] {
+  background-color: color-mix(in srgb, var(--md-on-surface) 12%, transparent);
+  color: color-mix(in srgb, var(--md-on-surface) 38%, transparent);
+  box-shadow: none;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.md-btn--text:disabled,
+.md-btn--outlined:disabled { background-color: transparent; }
+@@notes
+Spring curves overshoot, so the shape morph on press has a small bounce. See get_tokens section=motion for the approximation caveat.

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "md3-demo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/serve.js", "4173"],
+      "port": 4173
+    }
+  ]
+}

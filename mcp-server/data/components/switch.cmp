@@ -1,0 +1,102 @@
+id: switch
+name: Switch (on/off setting)
+category: inputs
+summary: A native checkbox styled as an MD3 switch with an icon in the selected thumb. Takes effect immediately.
+requires: foundation
+@@spec
+- Track 52x32dp, shape full. Thumb 16dp off (outline), 24dp on (on-primary), 28dp pressed. Selected track is primary.
+- Selected thumb shows a check icon, so state is not carried by color alone.
+- Label in Body Large to the side. The whole row is the 48dp touch target.
+- Use for settings that apply immediately. For a choice that needs a Save button, use a checkbox.
+@@a11y
+- <input type="checkbox" role="switch"> inside a <label>, so the label text is the name and the native toggle behavior stays.
+- Do not change the label when the state changes ("Dark mode", not "Dark mode on").
+- Disabled uses the disabled attribute.
+@@html
+<label class="md-switch">
+  <input class="md-switch__input" type="checkbox" role="switch" checked>
+  <span class="md-switch__track" aria-hidden="true">
+    <span class="md-switch__thumb"><span class="md-icon md-switch__check" aria-hidden="true">check</span></span>
+  </span>
+  <span class="md-switch__label">Price alerts</span>
+</label>
+@@css
+.md-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-lg);
+  min-height: 3rem;
+  cursor: pointer;
+}
+
+.md-switch__input {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  opacity: 0;
+}
+
+.md-switch__track {
+  position: relative;
+  flex: none;
+  width: 3.25rem;
+  height: 2rem;
+  border: 0.125rem solid var(--md-outline);
+  border-radius: var(--shape-full);
+  background: var(--md-surface-4);
+  transition:
+    background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects),
+    border-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects);
+}
+
+.md-switch__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0.375rem;
+  display: grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--shape-full);
+  background: var(--md-outline);
+  color: var(--md-primary);
+  transform: translateY(-50%);
+  transition:
+    left var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial),
+    width var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial),
+    height var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial),
+    background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects);
+}
+
+.md-switch__check { font-size: 1rem; opacity: 0; }
+
+.md-switch:hover .md-switch__thumb { background: var(--md-on-surface-variant); }
+.md-switch__input:active ~ .md-switch__track .md-switch__thumb { width: 1.75rem; height: 1.75rem; }
+
+.md-switch__input:checked ~ .md-switch__track {
+  border-color: var(--md-primary);
+  background: var(--md-primary);
+}
+.md-switch__input:checked ~ .md-switch__track .md-switch__thumb {
+  left: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--md-on-primary);
+}
+.md-switch__input:checked ~ .md-switch__track .md-switch__check { opacity: 1; }
+
+.md-switch__input:focus-visible ~ .md-switch__track {
+  outline: 0.1875rem solid var(--md-secondary);
+  outline-offset: 0.125rem;
+}
+
+.md-switch__label {
+  font-size: var(--md-type-body-large-size);
+  line-height: var(--md-type-body-large-line);
+  letter-spacing: var(--md-type-body-large-tracking);
+}
+
+.md-switch__input:disabled ~ .md-switch__track { opacity: var(--md-opacity-disabled-content); }
+.md-switch__input:disabled ~ .md-switch__label { color: color-mix(in srgb, var(--md-on-surface) 38%, transparent); }
+@@notes
+The thumb sits inside an aria-hidden track on purpose: the native input already exposes role, name and state.

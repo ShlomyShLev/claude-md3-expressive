@@ -1,0 +1,66 @@
+id: fab
+name: Floating action button (FAB, small, large, extended)
+category: actions
+summary: The one primary action of a screen, floating above content. Rounded square, not a circle.
+requires: foundation
+@@spec
+- Standard FAB 56dp, shape large (16dp). Small 40dp shape medium. Large 96dp shape extra-large.
+- Extended FAB: 56dp tall, icon plus Label Large text, padding 16dp, same shape as standard.
+- Container: primary-container with on-primary-container content. Elevation level 3 (a shadow is justified here because it floats).
+- At most one per screen. Place bottom end, 16dp from the edges, above a navigation bar.
+@@a11y
+- The icon-only FAB needs aria-label naming the action ("Compose", not "Add icon").
+- Extended FAB's visible text is its name.
+@@html
+<button class="md-fab" type="button" aria-label="Create note">
+  <span class="md-icon" aria-hidden="true">edit</span>
+</button>
+
+<button class="md-fab md-fab--extended" type="button">
+  <span class="md-icon" aria-hidden="true">edit</span>
+  Compose
+</button>
+@@css
+.md-fab {
+  --_bg: var(--md-primary-container);
+  --_c: var(--md-on-primary-container);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-md);
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--shape-lg);
+  background-color: var(--_bg);
+  color: var(--_c);
+  box-shadow: var(--md-elev-3);
+  font-family: var(--md-font-plain);
+  font-size: var(--md-type-label-large-size);
+  font-weight: var(--md-type-label-large-weight);
+  letter-spacing: var(--md-type-label-large-tracking);
+  cursor: pointer;
+  transition:
+    background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects),
+    box-shadow var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects),
+    border-radius var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial),
+    transform var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial);
+}
+
+.md-fab:hover  { background-color: color-mix(in srgb, var(--_c) 8%, var(--_bg)); box-shadow: var(--md-elev-4); }
+.md-fab:focus-visible { background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg)); }
+.md-fab:active {
+  background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg));
+  border-radius: var(--shape-md);
+  transform: scale(0.96);
+}
+
+.md-fab--small { width: 2.5rem; height: 2.5rem; border-radius: var(--shape-md); }
+.md-fab--large { width: 6rem; height: 6rem; border-radius: var(--shape-xl); }
+.md-fab--large .md-icon { font-size: 2.25rem; }
+
+.md-fab--extended { width: auto; padding: 0 var(--sp-lg); }
+@@notes
+The old circular FAB is the pre-Expressive look. Keep the rounded square.

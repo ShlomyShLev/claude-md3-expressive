@@ -1,0 +1,144 @@
+id: toc-faq
+name: Content page kit (jump-to-section box, numbered sections, visible FAQ)
+category: content
+summary: The reading-page pattern: one h1, a Jump to section card, numbered h2 sections and an FAQ whose questions mirror FAQPage JSON-LD.
+requires: foundation
+@@spec
+- Page title is the single h1 in Headline Large (Headline Medium on phones).
+- "Jump to section": a tonal card with Title Medium heading and a list of in-page links. Never hand-roll loose inline jump links.
+- Sections: h2 in Headline Small, with a small numbered badge in a tonal circle. Reading column about 62rem max, line length 65 to 75 characters.
+- FAQ: question as an h3 (Title Medium), answer in Body Large. Every visible question and answer is also in the page's FAQPage JSON-LD, word for word.
+- Add the source line (Body Small) under any figure.
+@@a11y
+- Real headings, contiguous: h1, then h2, then h3 for FAQ questions.
+- The jump nav is a <nav aria-label="Jump to section">. Targets have ids and scroll-margin so the sticky bar does not cover them.
+- Visible FAQ and JSON-LD must match: an AI extractor reads both and a mismatch is a trust problem.
+@@html
+<h1 class="md-page-title">Copper vs silver for AI demand</h1>
+
+<nav class="md-toc" aria-label="Jump to section">
+  <h2 class="md-toc__title">Jump to section</h2>
+  <ol class="md-toc__list">
+    <li><a href="#snapshot">The numbers</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ol>
+</nav>
+
+<section class="md-section" id="snapshot">
+  <div class="md-section__header">
+    <span class="md-section__num" aria-hidden="true">1</span>
+    <h2 class="md-section__title">The numbers</h2>
+  </div>
+  <p class="md-prose">Body Large reading text goes here.</p>
+</section>
+
+<section class="md-section" id="faq">
+  <div class="md-section__header">
+    <span class="md-section__num" aria-hidden="true">2</span>
+    <h2 class="md-section__title">FAQ</h2>
+  </div>
+  <h3 class="md-faq__q">Which is bigger, copper or silver demand?</h3>
+  <p class="md-faq__a">Answer text. It is repeated verbatim in the FAQPage JSON-LD.</p>
+</section>
+
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "FAQPage",
+  "mainEntity": [{ "@type": "Question", "name": "Which is bigger, copper or silver demand?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Answer text. It is repeated verbatim in the FAQPage JSON-LD." } }] }
+</script>
+@@css
+.md-page-title {
+  margin: 0 0 var(--sp-lg);
+  font-family: var(--md-font-brand);
+  font-size: var(--md-type-headline-medium-size);
+  font-weight: var(--md-type-headline-medium-weight);
+  line-height: var(--md-type-headline-medium-line);
+  letter-spacing: var(--md-type-headline-medium-tracking);
+}
+
+.md-toc {
+  margin: 0 0 var(--sp-2xl);
+  padding: var(--sp-lg);
+  border-radius: var(--shape-lg-inc);
+  background: var(--md-surface-3);
+}
+
+.md-toc__title {
+  margin: 0 0 var(--sp-sm);
+  font-size: var(--md-type-title-medium-size);
+  font-weight: var(--md-type-title-medium-weight);
+  line-height: var(--md-type-title-medium-line);
+  letter-spacing: var(--md-type-title-medium-tracking);
+}
+
+.md-toc__list {
+  display: grid;
+  gap: var(--sp-xs);
+  margin: 0;
+  padding-inline-start: var(--sp-xl);
+  font-size: var(--md-type-body-medium-size);
+  line-height: var(--md-type-body-medium-line);
+}
+.md-toc__list a { color: var(--md-primary); }
+
+.md-section { margin-bottom: var(--sp-2xl); scroll-margin-top: 5rem; }
+
+.md-section__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  margin-bottom: var(--sp-md);
+}
+
+.md-section__num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--shape-full);
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  font-size: var(--md-type-label-large-size);
+  font-weight: var(--md-type-label-large-weight);
+}
+
+.md-section__title {
+  margin: 0;
+  font-family: var(--md-font-brand);
+  font-size: var(--md-type-headline-small-size);
+  font-weight: var(--md-type-headline-small-weight);
+  line-height: var(--md-type-headline-small-line);
+  letter-spacing: var(--md-type-headline-small-tracking);
+}
+
+.md-prose {
+  max-width: 62rem;
+  margin: 0 0 var(--sp-lg);
+  font-size: var(--md-type-body-large-size);
+  line-height: var(--md-type-body-large-line);
+  letter-spacing: var(--md-type-body-large-tracking);
+}
+
+.md-faq__q {
+  margin: var(--sp-lg) 0 var(--sp-xs);
+  font-size: var(--md-type-title-medium-size);
+  font-weight: var(--md-type-title-medium-weight);
+  line-height: var(--md-type-title-medium-line);
+  letter-spacing: var(--md-type-title-medium-tracking);
+}
+
+.md-faq__a {
+  margin: 0;
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-body-large-size);
+  line-height: var(--md-type-body-large-line);
+  letter-spacing: var(--md-type-body-large-tracking);
+}
+
+@media (min-width: 40rem) {
+  .md-page-title {
+    font-size: var(--md-type-headline-large-size);
+    line-height: var(--md-type-headline-large-line);
+  }
+}

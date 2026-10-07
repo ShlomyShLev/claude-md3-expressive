@@ -1,0 +1,104 @@
+id: top-app-bar
+name: Top app bar (small 64dp, medium 112dp)
+category: navigation
+summary: The page header. Small is a single 64dp row, medium is 112dp with the title on a second line. Tonal on scroll.
+requires: foundation, icon-button
+@@spec
+- Small: 64dp tall, leading icon button, title Title Large, trailing actions (up to 3 icon buttons).
+- Medium: 112dp tall, actions on the top row, title Headline Small on the bottom row.
+- Resting container is the page surface. When content scrolls under it, it switches to surface-2 (set data-scrolled).
+- Horizontal padding 4dp around icon buttons (they are 48dp targets inside 16dp insets).
+- The page's single h1 lives in the app bar title, or directly below it, never both.
+@@a11y
+- Wrap in <header>. The title is the page <h1> (or aria-level is set if it is not).
+- Every action is an icon button with aria-label.
+- Navigation landmarks are named (aria-label) when there is more than one on the page.
+@@html
+<header class="md-top-app-bar">
+  <button class="md-icon-btn" type="button" aria-label="Open navigation menu" aria-haspopup="dialog">
+    <span class="md-icon" aria-hidden="true">menu</span>
+  </button>
+  <h1 class="md-top-app-bar__title">Markets</h1>
+  <div class="md-top-app-bar__actions">
+    <button class="md-icon-btn" type="button" aria-label="Search">
+      <span class="md-icon" aria-hidden="true">search</span>
+    </button>
+    <button class="md-icon-btn" type="button" aria-label="Toggle dark mode" aria-pressed="false" data-md-theme-toggle>
+      <span class="md-icon" aria-hidden="true">dark_mode</span>
+    </button>
+  </div>
+</header>
+
+<!-- medium variant: add the modifier -->
+<header class="md-top-app-bar md-top-app-bar--medium">
+  <button class="md-icon-btn" type="button" aria-label="Back">
+    <span class="md-icon" aria-hidden="true">arrow_back</span>
+  </button>
+  <div class="md-top-app-bar__actions"></div>
+  <h1 class="md-top-app-bar__title">A longer page title</h1>
+</header>
+@@css
+.md-top-app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  min-height: 4rem;
+  padding: 0 var(--sp-xs);
+  background: var(--md-surface);
+  color: var(--md-on-surface);
+  transition: background-color var(--md-spring-default-effects-dur) var(--md-spring-default-effects);
+}
+
+.md-top-app-bar[data-scrolled] { background: var(--md-surface-2); }
+
+.md-top-app-bar__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--md-font-brand);
+  font-size: var(--md-type-title-large-size);
+  font-weight: var(--md-type-title-large-weight);
+  line-height: var(--md-type-title-large-line);
+  letter-spacing: var(--md-type-title-large-tracking);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.md-top-app-bar__actions {
+  display: flex;
+  align-items: center;
+}
+
+.md-top-app-bar--medium {
+  flex-wrap: wrap;
+  align-content: space-between;
+  min-height: 7rem;
+  padding-bottom: var(--sp-lg);
+}
+.md-top-app-bar--medium .md-top-app-bar__actions { margin-inline-start: auto; }
+.md-top-app-bar--medium .md-top-app-bar__title {
+  flex: 0 0 100%;
+  padding: 0 var(--sp-md);
+  font-size: var(--md-type-headline-small-size);
+  line-height: var(--md-type-headline-small-line);
+  letter-spacing: var(--md-type-headline-small-tracking);
+  white-space: normal;
+}
+@@js
+// Tonal bar once the page scrolls under it.
+(function () {
+  var bar = document.querySelector('.md-top-app-bar');
+  if (!bar) return;
+  var update = function () {
+    if (window.scrollY > 0) bar.setAttribute('data-scrolled', '');
+    else bar.removeAttribute('data-scrolled');
+  };
+  addEventListener('scroll', update, { passive: true });
+  update();
+})();
+@@notes
+Icon names used here (menu, search, dark_mode, arrow_back) are common, but verify each in a static Material Symbols subset.

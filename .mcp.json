@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "md3-expressive": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/server.js"]
+    }
+  }
+}

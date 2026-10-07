@@ -1,0 +1,103 @@
+id: card
+name: Card (tonal, elevated, outlined, interactive)
+category: containers
+summary: A grouped surface for related content. Expressive cards are tonal and generously rounded, not shadowed.
+requires: foundation
+@@spec
+- Shape large-increased (20dp). Padding 16dp (24dp from the expanded breakpoint).
+- Default is tonal: surface-3 container, no shadow. Elevated uses surface-1 plus elevation 1. Outlined uses surface with a 1px outline-variant border.
+- Title: Title Medium (or Title Large for a hero card). Body: Body Medium. Supporting meta: Body Small on-surface-variant.
+- Interactive card (a whole-card link) gets state layers and a focus ring. Only one interactive target per card unless it is a list of actions.
+- Do not nest cards. Group with spacing or a divider instead.
+@@a11y
+- The card title is a real heading at the right level for the outline (h2 or h3), not a styled div.
+- A whole-card link: put the link on the heading and stretch it over the card with ::after, so there is exactly one link and the name is the title.
+- Media gets alt text, or alt="" when decorative.
+@@html
+<article class="md-card">
+  <h3 class="md-card__title">Copper, five years</h3>
+  <p class="md-card__body">$10,000 would be about $15,000 today.</p>
+  <p class="md-card__meta">Source: daily prices, updated every six hours.</p>
+  <div class="md-card__actions">
+    <button class="md-btn md-btn--text" type="button">Details</button>
+  </div>
+</article>
+
+<!-- whole-card link -->
+<article class="md-card md-card--interactive">
+  <h3 class="md-card__title"><a class="md-card__link" href="/guide">Read the full guide</a></h3>
+  <p class="md-card__body">One link, stretched over the card.</p>
+</article>
+
+<article class="md-card md-card--outlined"> ... </article>
+<article class="md-card md-card--elevated"> ... </article>
+@@css
+.md-card {
+  --_bg: var(--md-surface-3);
+  --_c: var(--md-on-surface);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+  padding: var(--sp-lg);
+  border-radius: var(--shape-lg-inc);
+  background-color: var(--_bg);
+  color: var(--_c);
+  transition:
+    background-color var(--md-spring-default-effects-dur) var(--md-spring-default-effects),
+    box-shadow var(--md-spring-default-effects-dur) var(--md-spring-default-effects),
+    border-radius var(--md-spring-default-spatial-dur) var(--md-spring-default-spatial);
+}
+
+.md-card--elevated { --_bg: var(--md-surface-1); box-shadow: var(--md-elev-1); }
+.md-card--outlined {
+  --_bg: var(--md-surface);
+  border: 0.0625rem solid var(--md-outline-variant);
+}
+
+.md-card__title {
+  margin: 0;
+  font-size: var(--md-type-title-medium-size);
+  font-weight: var(--md-type-title-medium-weight);
+  line-height: var(--md-type-title-medium-line);
+  letter-spacing: var(--md-type-title-medium-tracking);
+}
+
+.md-card__body {
+  margin: 0;
+  font-size: var(--md-type-body-medium-size);
+  line-height: var(--md-type-body-medium-line);
+  letter-spacing: var(--md-type-body-medium-tracking);
+}
+
+.md-card__meta {
+  margin: 0;
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-body-small-size);
+  line-height: var(--md-type-body-small-line);
+  letter-spacing: var(--md-type-body-small-tracking);
+}
+
+.md-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-sm);
+  margin-top: var(--sp-xs);
+}
+
+.md-card__link { color: inherit; text-decoration: none; }
+.md-card__link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+
+.md-card--interactive { cursor: pointer; }
+.md-card--interactive:hover {
+  background-color: color-mix(in srgb, var(--_c) 8%, var(--_bg));
+  border-radius: var(--shape-xl);
+}
+.md-card--interactive:has(.md-card__link:focus-visible) {
+  outline: 0.1875rem solid var(--md-secondary);
+  outline-offset: 0.125rem;
+}
+
+@media (min-width: 52.5rem) {
+  .md-card { padding: var(--sp-xl); }
+}

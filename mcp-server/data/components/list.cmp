@@ -1,0 +1,94 @@
+id: list
+name: List (one, two or three line items)
+category: containers
+summary: Rows with a leading icon or avatar, headline, supporting text and a trailing control.
+requires: foundation
+@@spec
+- Item min height 56dp (one line), 72dp (two lines), 88dp (three lines). Padding 16dp, gap 16dp.
+- Headline: Body Large. Supporting text: Body Medium on-surface-variant. Trailing meta: Label Small or Label Medium.
+- Leading icon 24dp, or a 40dp circular avatar. Dividers use outline-variant, inset to align with the text.
+- Interactive items (links or buttons) get state layers and a focus ring across the whole row.
+@@a11y
+- A real <ul>/<li>. If a row is clickable, the row is one link or button, with the headline as its name.
+- Trailing controls inside a clickable row are a separate button, not nested interactive content.
+- Icons are aria-hidden.
+@@html
+<ul class="md-list">
+  <li>
+    <a class="md-list__item" href="/copper">
+      <span class="md-icon md-list__lead" aria-hidden="true">show_chart</span>
+      <span class="md-list__text">
+        <span class="md-list__headline">Copper</span>
+        <span class="md-list__support">Five-year return and volatility</span>
+      </span>
+      <span class="md-list__trail">+51%</span>
+    </a>
+  </li>
+  <li>
+    <a class="md-list__item" href="/silver">
+      <span class="md-icon md-list__lead" aria-hidden="true">show_chart</span>
+      <span class="md-list__text">
+        <span class="md-list__headline">Silver</span>
+        <span class="md-list__support">Five-year return and volatility</span>
+      </span>
+      <span class="md-list__trail">+88%</span>
+    </a>
+  </li>
+</ul>
+@@css
+.md-list {
+  margin: 0;
+  padding: var(--sp-sm) 0;
+  list-style: none;
+}
+
+.md-list li + li { border-top: 0.0625rem solid var(--md-outline-variant); }
+
+.md-list__item {
+  --_bg: transparent;
+  --_c: var(--md-on-surface);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-lg);
+  min-height: 3.5rem;
+  padding: var(--sp-sm) var(--sp-lg);
+  background-color: var(--_bg);
+  color: var(--_c);
+  text-decoration: none;
+  transition: background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects);
+}
+
+a.md-list__item:hover,
+button.md-list__item:hover { background-color: color-mix(in srgb, var(--_c) 8%, var(--_bg)); }
+a.md-list__item:focus-visible,
+button.md-list__item:focus-visible { background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg)); }
+
+.md-list__lead { color: var(--md-on-surface-variant); }
+
+.md-list__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.md-list__headline {
+  font-size: var(--md-type-body-large-size);
+  line-height: var(--md-type-body-large-line);
+  letter-spacing: var(--md-type-body-large-tracking);
+}
+
+.md-list__support {
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-body-medium-size);
+  line-height: var(--md-type-body-medium-line);
+  letter-spacing: var(--md-type-body-medium-tracking);
+}
+
+.md-list__trail {
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-label-medium-size);
+  font-weight: var(--md-type-label-medium-weight);
+  letter-spacing: var(--md-type-label-medium-tracking);
+  font-variant-numeric: tabular-nums;
+}

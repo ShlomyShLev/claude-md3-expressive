@@ -1,0 +1,90 @@
+id: dialog
+name: Dialog (basic modal, native <dialog>)
+category: communication
+summary: A modal decision or short form. Uses the native dialog element for focus trapping and Escape. Communication surface, so real reading sizes.
+requires: foundation, button
+@@spec
+- Container surface-3, shape extra-large (28dp), padding 24dp, width 280dp min to 560dp max.
+- Headline: Headline Small. Body: Body Medium on-surface-variant. Actions: text or tonal buttons, right aligned, 8dp gap.
+- Scrim: scrim role at 32% opacity. Opens with a spatial spring (scale and fade), closes faster.
+- Short and decisive. A form with more than a few fields belongs on a page, not in a dialog.
+- Communication surface: never apply the dense data type tokens here.
+@@a11y
+- Native <dialog> opened with showModal() traps focus and closes on Escape.
+- aria-labelledby points at the headline. aria-describedby points at the body when it is a single paragraph.
+- The opener has aria-haspopup="dialog" (not aria-pressed). Focus returns to the opener on close (the browser does this for showModal).
+- Provide a visible way to dismiss: a Cancel button, not only the scrim.
+@@html
+<button class="md-btn md-btn--filled" type="button" aria-haspopup="dialog" data-md-dialog-open="confirm-dialog">Delete</button>
+
+<dialog class="md-dialog" id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-body">
+  <form method="dialog">
+    <h2 class="md-dialog__title" id="confirm-title">Delete this watchlist?</h2>
+    <p class="md-dialog__body" id="confirm-body">This removes the list and its 12 symbols. You can't undo it.</p>
+    <div class="md-dialog__actions">
+      <button class="md-btn md-btn--text" value="cancel">Cancel</button>
+      <button class="md-btn md-btn--text" value="delete">Delete</button>
+    </div>
+  </form>
+</dialog>
+@@css
+.md-dialog {
+  width: min(35rem, calc(100vw - 3rem));
+  min-width: 17.5rem;
+  padding: var(--sp-xl);
+  border: 0;
+  border-radius: var(--shape-xl);
+  background: var(--md-surface-3);
+  color: var(--md-on-surface);
+  box-shadow: var(--md-elev-3);
+}
+
+.md-dialog::backdrop { background: color-mix(in srgb, var(--md-scrim) 32%, transparent); }
+
+.md-dialog[open] { animation: md-dialog-in var(--md-spring-default-spatial-dur) var(--md-spring-default-spatial); }
+
+@keyframes md-dialog-in {
+  from { opacity: 0; transform: scale(0.88) translateY(1rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+.md-dialog__title {
+  margin: 0 0 var(--sp-lg);
+  font-family: var(--md-font-brand);
+  font-size: var(--md-type-headline-small-size);
+  font-weight: var(--md-type-headline-small-weight);
+  line-height: var(--md-type-headline-small-line);
+  letter-spacing: var(--md-type-headline-small-tracking);
+}
+
+.md-dialog__body {
+  margin: 0 0 var(--sp-xl);
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-body-medium-size);
+  line-height: var(--md-type-body-medium-line);
+  letter-spacing: var(--md-type-body-medium-tracking);
+}
+
+.md-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--sp-sm);
+}
+@@js
+// Open on [data-md-dialog-open="<dialog id>"], close on [value="cancel"] or a click on the scrim.
+document.addEventListener('click', function (ev) {
+  var opener = ev.target.closest('[data-md-dialog-open]');
+  if (opener) {
+    var dlg = document.getElementById(opener.getAttribute('data-md-dialog-open'));
+    if (dlg && typeof dlg.showModal === 'function') dlg.showModal();
+    return;
+  }
+  if (ev.target instanceof HTMLDialogElement && ev.target.classList.contains('md-dialog')) {
+    // A click on the dialog's own padding also targets the dialog, so only a click outside its box is the scrim.
+    var r = ev.target.getBoundingClientRect();
+    if (ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom) ev.target.close();
+  }
+});
+@@notes
+Dialog opens with data-md-dialog-open on the button: the lint rule a11y-dialog-opener checks that such a button also carries aria-haspopup="dialog".

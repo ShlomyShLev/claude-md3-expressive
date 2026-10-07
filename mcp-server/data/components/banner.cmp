@@ -1,0 +1,76 @@
+id: banner
+name: Banner (persistent notice with up to two actions)
+category: communication
+summary: A message that stays until the person acts: a status, an offline notice, a refresh prompt. Reads at Body Medium.
+requires: foundation, button
+@@spec
+- Container surface-3, shape large (16dp), padding 16dp, optional leading icon in a 40dp tonal circle.
+- Message in Body Medium (14sp), never a dense data size. Title, if any, in Title Small.
+- At most two actions: a text button for the primary, a text button for dismiss. Actions sit under the text on phones, to the end on wide screens.
+- Push content down rather than overlaying it.
+- Use for things the person should keep seeing. Short confirmations belong in a snackbar.
+@@a11y
+- role="region" with aria-label for a general notice, or role="status" when it appears after load and is informational. Use role="alert" only for urgent, error-level notices.
+- The icon is aria-hidden. Meaning is in the text, not the icon color.
+- Dismiss is a named button ("Dismiss").
+@@html
+<section class="md-banner" role="region" aria-label="Update available">
+  <span class="md-banner__icon"><span class="md-icon" aria-hidden="true">info</span></span>
+  <div class="md-banner__content">
+    <h2 class="md-banner__title">A new version is ready</h2>
+    <p class="md-banner__text">Refresh to get the latest prices and fixes. Your layout is kept.</p>
+  </div>
+  <div class="md-banner__actions">
+    <button class="md-btn md-btn--text" type="button">Dismiss</button>
+    <button class="md-btn md-btn--text" type="button">Refresh</button>
+  </div>
+</section>
+@@css
+.md-banner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-md) var(--sp-lg);
+  align-items: start;
+  padding: var(--sp-lg);
+  border-radius: var(--shape-lg);
+  background: var(--md-surface-3);
+  color: var(--md-on-surface);
+}
+
+.md-banner__icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--shape-full);
+  background: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+
+.md-banner__title {
+  margin: 0;
+  font-size: var(--md-type-title-small-size);
+  font-weight: var(--md-type-title-small-weight);
+  line-height: var(--md-type-title-small-line);
+  letter-spacing: var(--md-type-title-small-tracking);
+}
+
+.md-banner__text {
+  margin: 0;
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-body-medium-size);
+  line-height: var(--md-type-body-medium-line);
+  letter-spacing: var(--md-type-body-medium-tracking);
+}
+
+.md-banner__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-sm);
+}
+
+@media (min-width: 40rem) {
+  .md-banner { grid-template-columns: auto 1fr auto; align-items: center; }
+  .md-banner__actions { grid-column: auto; }
+}

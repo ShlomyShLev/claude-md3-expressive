@@ -1,0 +1,82 @@
+id: data-table
+name: Data table card (extractable, scrolls on phones)
+category: content
+summary: A real comparison table inside a tonal card. Built to be read by people, screen readers and AI extractors.
+requires: foundation
+@@spec
+- Card: surface-3, shape large-increased, horizontal scroll inside the card, never the page.
+- Header cells Title Small on surface-variant tint, body cells Body Medium, numbers right-aligned with tabular numerals.
+- Row dividers outline-variant, 56dp min row height (comfortable) or 40dp (dense, ticker data only).
+- First column is the row header. A caption (visible or sr-only) names the table.
+- Keep it a real <table>. Do not fake tables with divs: extractors and screen readers read the semantics.
+- Always say the unit and the as-of date near the table (a footnote in Body Small).
+@@a11y
+- <caption>, <thead>, <th scope="col"> and <th scope="row"> for the first column.
+- The scroll container is focusable (tabindex="0") with role="region" and an aria-label so keyboard users can scroll it.
+- Do not encode meaning in color alone: pair a green/red change with a sign or arrow.
+- Mirror important tables in JSON-LD (Dataset or a plain list) when the page is meant for AI extraction.
+@@html
+<div class="md-table-card" role="region" aria-label="Five-year returns" tabindex="0">
+  <table class="md-table">
+    <caption class="md-sr-only">Five-year price return by metal</caption>
+    <thead>
+      <tr>
+        <th scope="col">Metal</th>
+        <th scope="col" class="md-table__num">5-year return</th>
+        <th scope="col" class="md-table__num">Volatility</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">Copper</th><td class="md-table__num">+51%</td><td class="md-table__num">22%</td></tr>
+      <tr><th scope="row">Silver</th><td class="md-table__num">+88%</td><td class="md-table__num">35%</td></tr>
+    </tbody>
+  </table>
+</div>
+<p class="md-table-note">Price change only, in US dollars. Source and date go here.</p>
+@@css
+.md-table-card {
+  overflow-x: auto;
+  border-radius: var(--shape-lg-inc);
+  background: var(--md-surface-3);
+  color: var(--md-on-surface);
+}
+
+.md-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--md-type-body-medium-size);
+  line-height: var(--md-type-body-medium-line);
+  letter-spacing: var(--md-type-body-medium-tracking);
+}
+
+.md-table th,
+.md-table td {
+  min-height: 3.5rem;
+  padding: var(--sp-md) var(--sp-lg);
+  border-bottom: 0.0625rem solid var(--md-outline-variant);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.md-table thead th {
+  background: var(--md-surface-variant);
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-title-small-size);
+  font-weight: var(--md-type-title-small-weight);
+  letter-spacing: var(--md-type-title-small-tracking);
+  white-space: nowrap;
+}
+
+.md-table tbody th { font-weight: 500; }
+.md-table tbody tr:last-child > * { border-bottom: 0; }
+.md-table tbody tr:hover { background: color-mix(in srgb, var(--md-on-surface) 8%, transparent); }
+
+.md-table .md-table__num { text-align: end; font-variant-numeric: tabular-nums; }
+
+.md-table-note {
+  margin: var(--sp-sm) var(--sp-lg) 0;
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-body-small-size);
+  line-height: var(--md-type-body-small-line);
+  letter-spacing: var(--md-type-body-small-tracking);
+}

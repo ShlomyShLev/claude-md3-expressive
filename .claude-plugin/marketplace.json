@@ -1,0 +1,12 @@
+{
+  "name": "md3-expressive",
+  "owner": { "name": "gmdmarkets.com" },
+  "plugins": [
+    {
+      "name": "claude-md3-expressive",
+      "source": "./",
+      "description": "Material Design 3 Expressive kit: skill, ready-made accessible components, and an MCP server with tokens, a linter and a contrast checker.",
+      "version": "0.1.0"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+id: button-group
+name: Button group (connected, single or multi select)
+category: actions
+summary: A row of related toggle buttons that read as one control. The selected button morphs to a full pill.
+requires: foundation, button
+@@spec
+- Connected group: 2dp gap, inner corners extra-small, outer corners full. Selected button is full-round, the rest keep the small inner radius.
+- Use for 2 to 5 mutually related choices (a view switch, a time range). More than 5 becomes a menu or a chip set.
+- Same label role as buttons (Label Large). Group height follows the button size.
+@@a11y
+- role="group" with an aria-label that names the choice.
+- Every button carries aria-pressed (true/false), updated wherever the selection changes, including timers and resets.
+- For a single-select group, JS sets aria-pressed on the chosen button and clears the others.
+@@html
+<div class="md-btn-group" role="group" aria-label="Chart range">
+  <button class="md-btn md-btn--tonal" type="button" aria-pressed="false">1D</button>
+  <button class="md-btn md-btn--tonal" type="button" aria-pressed="true">7D</button>
+  <button class="md-btn md-btn--tonal" type="button" aria-pressed="false">30D</button>
+</div>
+@@css
+.md-btn-group {
+  display: inline-flex;
+  gap: 0.125rem;
+}
+
+.md-btn-group > .md-btn {
+  border-radius: var(--shape-xs);
+  padding: 0 var(--sp-lg);
+}
+.md-btn-group > .md-btn:first-child {
+  border-start-start-radius: var(--shape-full);
+  border-end-start-radius: var(--shape-full);
+}
+.md-btn-group > .md-btn:last-child {
+  border-start-end-radius: var(--shape-full);
+  border-end-end-radius: var(--shape-full);
+}
+
+/* inside a group the selected button reads as the full pill, the opposite of a lone toggle */
+.md-btn-group > .md-btn[aria-pressed="true"] { border-radius: var(--shape-full); }
+.md-btn-group > .md-btn:active { border-radius: var(--shape-sm); }
+@@js
+// Single-select: keep aria-pressed in sync on every button of the group.
+document.addEventListener('click', function (ev) {
+  var btn = ev.target.closest('.md-btn-group > .md-btn');
+  if (!btn) return;
+  btn.parentElement.querySelectorAll('.md-btn').forEach(function (b) {
+    b.setAttribute('aria-pressed', String(b === btn));
+  });
+});

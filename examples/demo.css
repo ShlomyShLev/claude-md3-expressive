@@ -1,0 +1,36 @@
+/* Layout for the demo page only. The components themselves come from md3-expressive.css. */
+.demo-main {
+  display: grid;
+  gap: var(--sp-2xl);
+  width: min(100% - 2rem, 62rem);
+  margin: var(--sp-lg) auto var(--sp-3xl);
+}
+
+.demo-block {
+  display: grid;
+  gap: var(--sp-lg);
+}
+
+.demo-h {
+  margin: 0;
+  font-family: var(--md-font-brand);
+  font-size: var(--md-type-headline-small-size);
+  font-weight: var(--md-type-headline-small-weight);
+  line-height: var(--md-type-headline-small-line);
+}
+
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-md);
+}
+
+.demo-grid {
+  display: grid;
+  gap: var(--sp-lg);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.demo-list { border-radius: var(--shape-lg-inc); }
+.demo-panel { padding: var(--sp-lg) var(--sp-md); }

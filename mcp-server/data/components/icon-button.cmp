@@ -1,0 +1,80 @@
+id: icon-button
+name: Icon button (standard, filled, tonal, outlined, toggle)
+category: actions
+summary: A 48dp touch target around a 40dp icon container. Always named with aria-label.
+requires: foundation
+@@spec
+- Visible container 40dp, touch target 48dp (the button itself is 48dp, the container is a pseudo-element).
+- Icon 24dp. Standard style has no container until hover.
+- Toggle: aria-pressed true swaps to the filled container and the filled icon variation.
+- State layers 8% hover, 10% focus and pressed.
+@@a11y
+- Every icon button needs aria-label (or aria-labelledby). An icon or emoji is not a name.
+- The glyph span is aria-hidden="true".
+- Toggle buttons carry aria-pressed, and the label stays stable ("Bookmark"), not "Bookmarked".
+@@html
+<button class="md-icon-btn" type="button" aria-label="Open menu">
+  <span class="md-icon" aria-hidden="true">menu</span>
+</button>
+
+<button class="md-icon-btn md-icon-btn--tonal" type="button" aria-label="Search">
+  <span class="md-icon" aria-hidden="true">search</span>
+</button>
+
+<!-- toggle -->
+<button class="md-icon-btn md-icon-btn--toggle" type="button" aria-label="Bookmark" aria-pressed="false">
+  <span class="md-icon" aria-hidden="true">bookmark</span>
+</button>
+@@css
+.md-icon-btn {
+  --_bg: transparent;
+  --_c: var(--md-on-surface-variant);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--_c);
+  cursor: pointer;
+  user-select: none;
+}
+
+.md-icon-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0.25rem;
+  border-radius: var(--shape-full);
+  background-color: var(--_bg);
+  transition:
+    background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects),
+    border-radius var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial);
+}
+
+.md-icon-btn .md-icon { position: relative; }
+
+.md-icon-btn--filled   { --_bg: var(--md-primary);             --_c: var(--md-on-primary); }
+.md-icon-btn--tonal    { --_bg: var(--md-secondary-container); --_c: var(--md-on-secondary-container); }
+.md-icon-btn--outlined::before { border: 0.0625rem solid var(--md-outline); }
+
+.md-icon-btn:hover::before          { background-color: color-mix(in srgb, var(--_c) 8%, var(--_bg)); }
+.md-icon-btn:focus-visible::before  { background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg)); }
+.md-icon-btn:active::before {
+  background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg));
+  border-radius: var(--shape-md);
+}
+
+.md-icon-btn--toggle[aria-pressed="true"] {
+  --_bg: var(--md-primary);
+  --_c: var(--md-on-primary);
+}
+.md-icon-btn--toggle[aria-pressed="true"]::before { border-radius: var(--shape-md); }
+.md-icon-btn--toggle[aria-pressed="true"] .md-icon { font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24; }
+
+.md-icon-btn:disabled {
+  color: color-mix(in srgb, var(--md-on-surface) 38%, transparent);
+  cursor: not-allowed;
+  pointer-events: none;
+}

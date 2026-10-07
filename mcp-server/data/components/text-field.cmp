@@ -1,0 +1,113 @@
+id: text-field
+name: Text field (filled, with floating label and supporting text)
+category: inputs
+summary: The Expressive default input: a filled tonal field with a floating label, an active indicator and supporting text.
+requires: foundation
+@@spec
+- Filled style: container surface-4, top corners small (8dp), bottom edge is the 1px outline indicator that thickens to 2px primary on focus.
+- Height 56dp. Input text Body Large. Floating label Body Small, resting label Body Large.
+- Supporting text below in Body Small on-surface-variant. Error text replaces it and uses the error role, with an error icon so the state is not color alone.
+- Outlined fields are the secondary option. Prefer filled for forms on tonal surfaces.
+- Never rely on the placeholder as the label.
+@@a11y
+- The control sits inside (or is linked to) a <label>. The label text is the accessible name.
+- Supporting and error text are linked with aria-describedby. An invalid field sets aria-invalid="true".
+- Required fields use the required attribute plus a visible "required" cue in the label or supporting text.
+- Use the right type and autocomplete values (email, tel, one-time-code) so assistive tech and password managers cooperate.
+@@html
+<div class="md-field-wrap">
+  <label class="md-field">
+    <input class="md-field__input" type="email" name="email" placeholder=" " autocomplete="email" aria-describedby="email-help" required>
+    <span class="md-field__label">Email address</span>
+  </label>
+  <p class="md-field__support" id="email-help">We only use it to send the confirmation.</p>
+</div>
+
+<!-- error -->
+<div class="md-field-wrap md-field-wrap--error">
+  <label class="md-field">
+    <input class="md-field__input" type="email" name="email2" placeholder=" " aria-invalid="true" aria-describedby="email2-err">
+    <span class="md-field__label">Email address</span>
+  </label>
+  <p class="md-field__support" id="email2-err">
+    <span class="md-icon" aria-hidden="true">error</span>
+    Enter an address like name@example.com.
+  </p>
+</div>
+@@css
+.md-field-wrap { display: flex; flex-direction: column; gap: var(--sp-xs); }
+
+.md-field {
+  position: relative;
+  display: block;
+  min-height: 3.5rem;
+  border-radius: var(--shape-sm) var(--shape-sm) 0 0;
+  background-color: var(--md-surface-4);
+  box-shadow: inset 0 -0.0625rem 0 var(--md-on-surface-variant);
+  transition:
+    background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects),
+    box-shadow var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects);
+}
+
+.md-field:hover { background-color: color-mix(in srgb, var(--md-on-surface) 8%, var(--md-surface-4)); }
+
+.md-field:focus-within {
+  box-shadow: inset 0 -0.125rem 0 var(--md-primary);
+}
+
+.md-field__input {
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 1.625rem var(--sp-lg) var(--sp-sm);
+  border: 0;
+  background: transparent;
+  color: var(--md-on-surface);
+  caret-color: var(--md-primary);
+  font-family: var(--md-font-plain);
+  font-size: var(--md-type-body-large-size);
+  line-height: var(--md-type-body-large-line);
+  letter-spacing: var(--md-type-body-large-tracking);
+}
+
+/* the field shows its own indicator, so the default ring would double up */
+.md-field__input:focus-visible { outline: 0.1875rem solid transparent; }
+
+.md-field__label {
+  position: absolute;
+  inset-inline: var(--sp-lg);
+  top: 1rem;
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-body-large-size);
+  line-height: var(--md-type-body-large-line);
+  pointer-events: none;
+  transform-origin: left top;
+  transition:
+    transform var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial),
+    color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects);
+}
+
+/* floated: focused or holding a value (placeholder=" " makes :placeholder-shown reliable) */
+.md-field__input:focus + .md-field__label,
+.md-field__input:not(:placeholder-shown) + .md-field__label {
+  transform: translateY(-0.625rem) scale(0.75);
+}
+.md-field:focus-within .md-field__label { color: var(--md-primary); }
+
+.md-field__support {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  margin: 0;
+  padding: 0 var(--sp-lg);
+  color: var(--md-on-surface-variant);
+  font-size: var(--md-type-body-small-size);
+  line-height: var(--md-type-body-small-line);
+  letter-spacing: var(--md-type-body-small-tracking);
+}
+.md-field__support .md-icon { font-size: 1rem; }
+
+.md-field-wrap--error .md-field { box-shadow: inset 0 -0.125rem 0 var(--md-error); }
+.md-field-wrap--error .md-field__label,
+.md-field-wrap--error .md-field__support { color: var(--md-error); }
+
+.md-field__input:disabled { color: color-mix(in srgb, var(--md-on-surface) 38%, transparent); cursor: not-allowed; }

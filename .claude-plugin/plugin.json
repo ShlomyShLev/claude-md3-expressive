@@ -1,0 +1,10 @@
+{
+  "name": "claude-md3-expressive",
+  "version": "0.1.0",
+  "description": "Material Design 3 Expressive kit: a skill that sets the design rules, ready-made accessible components, and an MCP server with tokens, a linter and a contrast checker.",
+  "author": { "name": "Shlomo Shema", "url": "https://github.com/ShlomyShLev" },
+  "homepage": "https://github.com/ShlomyShLev/claude-md3-expressive",
+  "repository": "https://github.com/ShlomyShLev/claude-md3-expressive",
+  "license": "MIT",
+  "keywords": ["material-design", "md3", "expressive", "design-system", "accessibility", "ui"]
+}

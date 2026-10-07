@@ -1,0 +1,97 @@
+id: snackbar
+name: Snackbar (transient status message with one action)
+category: communication
+summary: A short, non-blocking message at the bottom of the screen. Announced politely to screen readers.
+requires: foundation, button
+@@spec
+- Container inverse-surface, text inverse-on-surface in Body Medium, shape extra-small (4dp), min height 48dp, padding 16dp.
+- One optional action in inverse-primary, Label Large. An optional close icon button.
+- Sits 16dp above the bottom edge, above a navigation bar (use the safe-area inset). Max width 36rem.
+- Auto-dismiss after 4 to 10 seconds. A snackbar with an action stays at least 6 seconds. Never stack: replace the current one.
+- Enters with a spatial spring (slide up), leaves with a fast effects fade.
+@@a11y
+- role="status" with aria-live="polite" (use role="alert" only for errors that need immediate attention).
+- The region exists in the DOM before the message is inserted, so assistive tech announces the change.
+- Do not put the only copy of critical information in a snackbar: it disappears.
+- Respect prefers-reduced-motion: show and hide without the slide.
+@@html
+<div class="md-snackbar-host" role="status" aria-live="polite">
+  <div class="md-snackbar" hidden>
+    <p class="md-snackbar__text">Watchlist deleted</p>
+    <button class="md-snackbar__action" type="button">Undo</button>
+  </div>
+</div>
+@@css
+.md-snackbar-host {
+  position: fixed;
+  inset-inline: 0;
+  bottom: calc(var(--sp-lg) + env(safe-area-inset-bottom, 0rem));
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--sp-lg);
+  pointer-events: none;
+}
+
+.md-snackbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  width: min(36rem, 100%);
+  min-height: 3rem;
+  padding: var(--sp-sm) var(--sp-sm) var(--sp-sm) var(--sp-lg);
+  border-radius: var(--shape-xs);
+  background: var(--md-inverse-surface);
+  color: var(--md-inverse-on-surface);
+  box-shadow: var(--md-elev-3);
+  pointer-events: auto;
+}
+
+/* display:flex above would otherwise beat the hidden attribute */
+.md-snackbar[hidden] { display: none; }
+
+.md-snackbar:not([hidden]) {
+  animation: md-snackbar-in var(--md-spring-default-spatial-dur) var(--md-spring-default-spatial);
+}
+
+@keyframes md-snackbar-in {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+.md-snackbar__text {
+  flex: 1;
+  margin: 0;
+  font-size: var(--md-type-body-medium-size);
+  line-height: var(--md-type-body-medium-line);
+  letter-spacing: var(--md-type-body-medium-tracking);
+}
+
+.md-snackbar__action {
+  min-height: 2.5rem;
+  padding: 0 var(--sp-md);
+  border: 0;
+  border-radius: var(--shape-full);
+  background: transparent;
+  color: var(--md-inverse-primary);
+  font-family: var(--md-font-plain);
+  font-size: var(--md-type-label-large-size);
+  font-weight: var(--md-type-label-large-weight);
+  letter-spacing: var(--md-type-label-large-tracking);
+  cursor: pointer;
+}
+.md-snackbar__action:hover { background: color-mix(in srgb, var(--md-inverse-primary) 8%, transparent); }
+@@js
+// showSnackbar("Saved", { label: "Undo", onAction: fn })
+function showSnackbar(message, action) {
+  var bar = document.querySelector('.md-snackbar');
+  if (!bar) return;
+  bar.querySelector('.md-snackbar__text').textContent = message;
+  var btn = bar.querySelector('.md-snackbar__action');
+  btn.hidden = !action;
+  btn.onclick = action ? function () { action.onAction(); bar.hidden = true; } : null;
+  if (action) btn.textContent = action.label;
+  bar.hidden = false;
+  clearTimeout(showSnackbar._t);
+  showSnackbar._t = setTimeout(function () { bar.hidden = true; }, action ? 8000 : 5000);
+}

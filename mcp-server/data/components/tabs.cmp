@@ -1,0 +1,91 @@
+id: tabs
+name: Tabs (primary, with keyboard arrows)
+category: navigation
+summary: Switch between peer views of the same content. 48dp tabs, a rounded active indicator, arrow-key navigation.
+requires: foundation
+@@spec
+- Tab height 48dp, label Title Small, equal-width or content-width with 16dp padding.
+- Active tab: label primary, 3dp indicator with rounded top corners; inactive: on-surface-variant.
+- Divider under the row in outline-variant. 2 to 6 tabs; more becomes a scrollable row or a menu.
+- State layer 8% hover, 10% focus and pressed.
+- Tabs switch views in place. If each tab is its own URL, use a navigation bar or links with aria-current instead.
+@@a11y
+- role="tablist" with an aria-label. Each tab: role="tab", aria-selected, aria-controls pointing at its panel. Each panel: role="tabpanel", aria-labelledby.
+- Roving tabindex: the selected tab has tabindex="0", the others "-1". Left/Right arrows move and activate, Home/End jump.
+- Hidden panels use the hidden attribute so they leave the accessibility tree.
+@@html
+<div class="md-tabs" role="tablist" aria-label="Market view">
+  <button class="md-tab" role="tab" type="button" id="tab-overview" aria-selected="true"  aria-controls="panel-overview">Overview</button>
+  <button class="md-tab" role="tab" type="button" id="tab-movers"   aria-selected="false" aria-controls="panel-movers" tabindex="-1">Movers</button>
+  <button class="md-tab" role="tab" type="button" id="tab-news"     aria-selected="false" aria-controls="panel-news"   tabindex="-1">News</button>
+</div>
+<div id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">Overview content</div>
+<div id="panel-movers"   role="tabpanel" aria-labelledby="tab-movers" hidden>Movers content</div>
+<div id="panel-news"     role="tabpanel" aria-labelledby="tab-news"   hidden>News content</div>
+@@css
+.md-tabs {
+  display: flex;
+  border-bottom: 0.0625rem solid var(--md-outline-variant);
+}
+
+.md-tab {
+  --_bg: transparent;
+  --_c: var(--md-on-surface-variant);
+  position: relative;
+  flex: 1;
+  min-height: 3rem;
+  padding: 0 var(--sp-lg);
+  border: 0;
+  background-color: var(--_bg);
+  color: var(--_c);
+  font-family: var(--md-font-plain);
+  font-size: var(--md-type-title-small-size);
+  font-weight: var(--md-type-title-small-weight);
+  line-height: var(--md-type-title-small-line);
+  letter-spacing: var(--md-type-title-small-tracking);
+  cursor: pointer;
+  transition: background-color var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects);
+}
+
+.md-tab::after {
+  content: "";
+  position: absolute;
+  inset-inline: var(--sp-lg);
+  bottom: 0;
+  height: 0.1875rem;
+  border-radius: var(--shape-xs) var(--shape-xs) 0 0;
+  background: var(--md-primary);
+  transform: scaleX(0);
+  transition: transform var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial);
+}
+
+.md-tab:hover { background-color: color-mix(in srgb, var(--_c) 8%, var(--_bg)); }
+.md-tab:focus-visible { background-color: color-mix(in srgb, var(--_c) 10%, var(--_bg)); }
+
+.md-tab[aria-selected="true"] { --_c: var(--md-primary); }
+.md-tab[aria-selected="true"]::after { transform: scaleX(1); }
+@@js
+// Arrow-key navigation with roving tabindex.
+document.addEventListener('keydown', function (ev) {
+  var tab = ev.target.closest('.md-tab');
+  if (!tab) return;
+  var tabs = Array.from(tab.parentElement.querySelectorAll('.md-tab'));
+  var i = tabs.indexOf(tab);
+  var next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[ev.key];
+  if (next === undefined) return;
+  ev.preventDefault();
+  tabs[(next + tabs.length) % tabs.length].click();
+  tabs[(next + tabs.length) % tabs.length].focus();
+});
+
+document.addEventListener('click', function (ev) {
+  var tab = ev.target.closest('.md-tab');
+  if (!tab) return;
+  tab.parentElement.querySelectorAll('.md-tab').forEach(function (t) {
+    var on = t === tab;
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+    var panel = document.getElementById(t.getAttribute('aria-controls'));
+    if (panel) panel.hidden = !on;
+  });
+});

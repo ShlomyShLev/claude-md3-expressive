@@ -1,0 +1,31 @@
+{
+  "items": [
+    { "area": "type", "check": "Each text surface uses the MD3 role for its purpose (get_type_role). Dialogs, banners, snackbars, onboarding and prose use real reading sizes: Body Medium 14sp, Label Large 14sp for buttons, Title Small or Medium 14 to 16sp. Dense data tokens are only for ticker and price grids." },
+    { "area": "type", "check": "Nothing is below Label Small (11sp, 0.6875rem)." },
+    { "area": "tokens", "check": "Colors come from --md-* roles, never hex in component CSS, so light and dark both work." },
+    { "area": "tokens", "check": "Sizes are rem or --sp-* / --shape-* tokens. Only hairline borders and shadow offsets are px." },
+    { "area": "tokens", "check": "No CSS in markup: no <style> blocks and no static inline style. A dynamic binding that sets a custom property is fine." },
+    { "area": "expressive", "check": "Expressive choices were made, not just valid MD3: filled tonal fields, tonal surfaces instead of shadows, the larger end of the shape scale, shape morph on press or selection, spring motion for spatial change." },
+    { "area": "expressive", "check": "No more than three radii on one screen. At most one filled primary button and one FAB per screen." },
+    { "area": "components", "check": "Existing kit components were reused before any new markup was written (list_components)." },
+    { "area": "components", "check": "Component specs respected: top app bar 64 or 112dp, navigation bar 80dp with a 64x32dp indicator, buttons 40dp, chips 32dp, FAB 56dp, icon button 48dp target." },
+    { "area": "state", "check": "Hover 8%, focus and pressed 10% state layers via color-mix. Disabled is 38% content and 12% container." },
+    { "area": "a11y", "check": "Every control has a name. An icon or emoji is not a name: aria-label on the control, aria-hidden on the glyph." },
+    { "area": "a11y", "check": "A visual selected state has a programmatic twin: aria-pressed on every button of a toggle group (aria-current for navigation, aria-selected for tabs), updated wherever JS toggles the class, including timers." },
+    { "area": "a11y", "check": "A control that opens a dialog has aria-haspopup=\"dialog\" (not aria-pressed). Dialogs are named with aria-labelledby." },
+    { "area": "a11y", "check": "One h1, contiguous heading levels, section titles are real headings (reset the margin in CSS instead of using a span)." },
+    { "area": "a11y", "check": "Text contrast 4.5:1 (3:1 for large text), UI parts 3:1. Meaning is never carried by color alone." },
+    { "area": "a11y", "check": "Visible focus ring on :focus-visible, never removed without a replacement. Touch targets at least 48dp." },
+    { "area": "motion", "check": "Spatial motion uses spatial springs, color and opacity use effects springs. prefers-reduced-motion is honored. No transition: all." },
+    { "area": "responsive", "check": "Checked at compact (under 40rem), medium and expanded widths. Navigation: bar, rail, drawer. Any change to size or position is checked on a phone, not only inside breakpoint blocks." },
+    { "area": "content", "check": "Tables are real <table> with header cells, a caption and a unit/date note so people, screen readers and AI extractors read the same thing." },
+    { "area": "run", "check": "lint_markup returns zero errors on the final markup and CSS." }
+  ],
+  "surfaces": {
+    "page": ["tokens", "a11y", "content", "responsive", "type"],
+    "dialog": ["type", "a11y", "components", "expressive"],
+    "form": ["a11y", "components", "state", "expressive"],
+    "navigation": ["components", "a11y", "responsive", "state"],
+    "dashboard": ["type", "tokens", "responsive", "content"]
+  }
+}

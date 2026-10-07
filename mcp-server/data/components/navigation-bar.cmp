@@ -1,0 +1,112 @@
+id: navigation-bar
+name: Navigation bar (bottom, 3 to 5 destinations)
+category: navigation
+summary: Phone bottom navigation. 80dp tall with a 64x32dp pill that marks the active destination.
+requires: foundation
+@@spec
+- Height 80dp (min-height, so the iOS/Android safe-area inset can add to it, never shrink it).
+- 3 to 5 destinations. Each: icon 24dp inside a 64x32dp indicator pill, label below in Label Medium.
+- Active: indicator fills with secondary-container, icon fills, label goes bold and on-surface. The indicator grows in with a spatial spring.
+- Container: surface-2. Use on compact widths only (under 40rem). Medium widths get a navigation rail, expanded widths a drawer.
+- Labels are always visible, never icon-only.
+@@a11y
+- <nav aria-label="Primary">. Destinations are links, not buttons.
+- The active destination carries aria-current="page", not just a class.
+- Icons are aria-hidden. The label is the name.
+- A badge count needs a text equivalent in the label ("Inbox, 3 unread").
+@@html
+<nav class="md-nav-bar" aria-label="Primary">
+  <a class="md-nav-bar__item" href="/" aria-current="page">
+    <span class="md-nav-bar__indicator"><span class="md-icon md-icon--filled" aria-hidden="true">home</span></span>
+    <span class="md-nav-bar__label">Home</span>
+  </a>
+  <a class="md-nav-bar__item" href="/news">
+    <span class="md-nav-bar__indicator"><span class="md-icon" aria-hidden="true">newspaper</span></span>
+    <span class="md-nav-bar__label">News</span>
+  </a>
+  <a class="md-nav-bar__item" href="/calendar">
+    <span class="md-nav-bar__indicator"><span class="md-icon" aria-hidden="true">calendar_month</span></span>
+    <span class="md-nav-bar__label">Calendar</span>
+  </a>
+</nav>
+@@css
+.md-nav-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  min-height: calc(5rem + env(safe-area-inset-bottom, 0rem));
+  padding: var(--sp-md) var(--sp-sm) calc(var(--sp-lg) + env(safe-area-inset-bottom, 0rem));
+  background: var(--md-surface-2);
+  color: var(--md-on-surface-variant);
+}
+
+.md-nav-bar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xs);
+  min-width: 3rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.md-nav-bar__indicator {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 2rem;
+  border-radius: var(--shape-full);
+  isolation: isolate;
+}
+
+.md-nav-bar__indicator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--shape-full);
+  background: var(--md-secondary-container);
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition:
+    transform var(--md-spring-fast-spatial-dur) var(--md-spring-fast-spatial),
+    opacity var(--md-spring-fast-effects-dur) var(--md-spring-fast-effects);
+}
+
+.md-nav-bar__item:hover .md-nav-bar__indicator::before {
+  opacity: 1;
+  background: color-mix(in srgb, var(--md-on-surface) 8%, transparent);
+  transform: scaleX(1);
+}
+
+.md-nav-bar__item[aria-current="page"] { color: var(--md-on-surface); }
+.md-nav-bar__item[aria-current="page"] .md-nav-bar__indicator { color: var(--md-on-secondary-container); }
+.md-nav-bar__item[aria-current="page"] .md-nav-bar__indicator::before {
+  opacity: 1;
+  background: var(--md-secondary-container);
+  transform: scaleX(1);
+}
+
+.md-nav-bar__label {
+  font-size: var(--md-type-label-medium-size);
+  font-weight: var(--md-type-label-medium-weight);
+  line-height: var(--md-type-label-medium-line);
+  letter-spacing: var(--md-type-label-medium-tracking);
+}
+.md-nav-bar__item[aria-current="page"] .md-nav-bar__label { font-weight: 700; }
+
+/* leave room so page content never hides behind the fixed bar */
+.md-has-nav-bar { padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0rem)); }
+
+@media (min-width: 40rem) {
+  .md-nav-bar { display: none; }
+  .md-has-nav-bar { padding-bottom: 0; }
+}
+@@notes
+Icon names (home, newspaper, calendar_month) must exist in the Material Symbols subset you ship.

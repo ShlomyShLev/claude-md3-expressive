@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MD3 Expressive kit demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
+  <link rel="stylesheet" href="../dist/md3-expressive.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <a class="md-skip" href="#main">Skip to content</a>
+
+  <header class="md-top-app-bar">
+    <button class="md-icon-btn" type="button" aria-label="Open navigation menu" aria-haspopup="dialog" data-md-dialog-open="menu-dialog">
+      <span class="md-icon" aria-hidden="true">menu</span>
+    </button>
+    <h1 class="md-top-app-bar__title">MD3 Expressive kit</h1>
+    <div class="md-top-app-bar__actions">
+      <button class="md-icon-btn" type="button" aria-label="Toggle dark mode" aria-pressed="false" data-md-theme-toggle>
+        <span class="md-icon" aria-hidden="true">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="demo-main md-has-nav-bar">
+    <section class="md-banner" role="region" aria-label="About this demo">
+      <span class="md-banner__icon"><span class="md-icon" aria-hidden="true">info</span></span>
+      <div class="md-banner__content">
+        <h2 class="md-banner__title">Every part is a real kit component</h2>
+        <p class="md-banner__text">Toggle dark mode, press the buttons, open the dialog and resize to a phone width to see the navigation bar.</p>
+      </div>
+      <div class="md-banner__actions">
+        <button class="md-btn md-btn--text" type="button" data-demo-snack>Show snackbar</button>
+      </div>
+    </section>
+
+    <section class="demo-block" aria-labelledby="h-buttons">
+      <h2 class="demo-h" id="h-buttons">Buttons</h2>
+      <div class="demo-row">
+        <button class="md-btn md-btn--filled" type="button">Filled</button>
+        <button class="md-btn md-btn--tonal" type="button"><span class="md-icon" aria-hidden="true">add</span>Tonal</button>
+        <button class="md-btn md-btn--elevated" type="button">Elevated</button>
+        <button class="md-btn md-btn--outlined" type="button">Outlined</button>
+        <button class="md-btn md-btn--text" type="button">Text</button>
+        <button class="md-btn md-btn--filled" type="button" disabled>Disabled</button>
+        <button class="md-btn md-btn--tonal" type="button" aria-pressed="false">Toggle</button>
+      </div>
+      <div class="demo-row">
+        <div class="md-btn-group" role="group" aria-label="Chart range">
+          <button class="md-btn md-btn--tonal" type="button" aria-pressed="false">1D</button>
+          <button class="md-btn md-btn--tonal" type="button" aria-pressed="true">7D</button>
+          <button class="md-btn md-btn--tonal" type="button" aria-pressed="false">30D</button>
+        </div>
+        <button class="md-icon-btn" type="button" aria-label="Search"><span class="md-icon" aria-hidden="true">search</span></button>
+        <button class="md-icon-btn md-icon-btn--tonal" type="button" aria-label="Settings"><span class="md-icon" aria-hidden="true">settings</span></button>
+        <button class="md-icon-btn md-icon-btn--toggle" type="button" aria-label="Bookmark" aria-pressed="false"><span class="md-icon" aria-hidden="true">bookmark</span></button>
+        <button class="md-fab md-fab--extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Compose</button>
+      </div>
+    </section>
+
+    <section class="demo-block" aria-labelledby="h-inputs">
+      <h2 class="demo-h" id="h-inputs">Inputs</h2>
+      <div class="md-chip-set" role="group" aria-label="Asset class">
+        <button class="md-chip" type="button" aria-pressed="true"><span class="md-icon md-chip__check" aria-hidden="true">check</span>Metals</button>
+        <button class="md-chip" type="button" aria-pressed="false">Energy</button>
+        <button class="md-chip" type="button" aria-pressed="false">Crypto</button>
+      </div>
+      <div class="demo-row">
+        <div class="md-field-wrap">
+          <label class="md-field">
+            <input class="md-field__input" type="email" name="email" placeholder=" " autocomplete="email" aria-describedby="email-help">
+            <span class="md-field__label">Email address</span>
+          </label>
+          <p class="md-field__support" id="email-help">We only use it to send the confirmation.</p>
+        </div>
+        <div class="md-field-wrap md-field-wrap--error">
+          <label class="md-field">
+            <input class="md-field__input" type="email" name="email2" placeholder=" " value="name@" aria-invalid="true" aria-describedby="email2-err">
+            <span class="md-field__label">Email address</span>
+          </label>
+          <p class="md-field__support" id="email2-err"><span class="md-icon" aria-hidden="true">error</span>Enter an address like name@example.com.</p>
+        </div>
+      </div>
+      <label class="md-switch">
+        <input class="md-switch__input" type="checkbox" role="switch" checked>
+        <span class="md-switch__track" aria-hidden="true"><span class="md-switch__thumb"><span class="md-icon md-switch__check" aria-hidden="true">check</span></span></span>
+        <span class="md-switch__label">Price alerts</span>
+      </label>
+    </section>
+
+    <section class="demo-block" aria-labelledby="h-containers">
+      <h2 class="demo-h" id="h-containers">Cards, list and tabs</h2>
+      <div class="demo-grid">
+        <article class="md-card">
+          <h3 class="md-card__title">Copper, five years</h3>
+          <p class="md-card__body">$10,000 would be about $15,000 today.</p>
+          <p class="md-card__meta">Source: daily prices, updated every six hours.</p>
+          <div class="md-card__actions"><button class="md-btn md-btn--text" type="button">Details</button></div>
+        </article>
+        <article class="md-card md-card--interactive">
+          <h3 class="md-card__title"><a class="md-card__link" href="#h-containers">Read the full guide</a></h3>
+          <p class="md-card__body">One link, stretched over the whole card.</p>
+        </article>
+        <article class="md-card md-card--outlined">
+          <h3 class="md-card__title">Outlined card</h3>
+          <p class="md-card__body">For content that should not pull focus.</p>
+        </article>
+      </div>
+
+      <ul class="md-list md-surface-3 demo-list">
+        <li><a class="md-list__item" href="#h-containers"><span class="md-icon md-list__lead" aria-hidden="true">show_chart</span><span class="md-list__text"><span class="md-list__headline">Copper</span><span class="md-list__support">Five-year return and volatility</span></span><span class="md-list__trail">+51%</span></a></li>
+        <li><a class="md-list__item" href="#h-containers"><span class="md-icon md-list__lead" aria-hidden="true">show_chart</span><span class="md-list__text"><span class="md-list__headline">Silver</span><span class="md-list__support">Five-year return and volatility</span></span><span class="md-list__trail">+88%</span></a></li>
+      </ul>
+
+      <div class="md-tabs" role="tablist" aria-label="Market view">
+        <button class="md-tab" role="tab" type="button" id="tab-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
+        <button class="md-tab" role="tab" type="button" id="tab-movers" aria-selected="false" aria-controls="panel-movers" tabindex="-1">Movers</button>
+        <button class="md-tab" role="tab" type="button" id="tab-news" aria-selected="false" aria-controls="panel-news" tabindex="-1">News</button>
+      </div>
+      <div id="panel-overview" role="tabpanel" aria-labelledby="tab-overview"><p class="md-prose demo-panel">Overview content. Use the arrow keys to move between tabs.</p></div>
+      <div id="panel-movers" role="tabpanel" aria-labelledby="tab-movers" hidden><p class="md-prose demo-panel">Movers content.</p></div>
+      <div id="panel-news" role="tabpanel" aria-labelledby="tab-news" hidden><p class="md-prose demo-panel">News content.</p></div>
+    </section>
+
+    <section class="demo-block" aria-labelledby="h-table">
+      <h2 class="demo-h" id="h-table">Data table</h2>
+      <div class="md-table-card" role="region" aria-label="Five-year returns" tabindex="0">
+        <table class="md-table">
+          <caption class="md-sr-only">Five-year price return by metal</caption>
+          <thead><tr><th scope="col">Metal</th><th scope="col" class="md-table__num">5-year return</th><th scope="col" class="md-table__num">Volatility</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Copper</th><td class="md-table__num">+51%</td><td class="md-table__num">22%</td></tr>
+            <tr><th scope="row">Silver</th><td class="md-table__num">+88%</td><td class="md-table__num">35%</td></tr>
+            <tr><th scope="row">Aluminum</th><td class="md-table__num">+18%</td><td class="md-table__num">19%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="md-table-note">Illustrative numbers. Price change only, in US dollars.</p>
+    </section>
+
+    <section class="demo-block" aria-labelledby="h-dialog">
+      <h2 class="demo-h" id="h-dialog">Dialog</h2>
+      <button class="md-btn md-btn--filled" type="button" aria-haspopup="dialog" data-md-dialog-open="confirm-dialog">Delete watchlist</button>
+    </section>
+  </main>
+
+  <nav class="md-nav-bar" aria-label="Primary">
+    <a class="md-nav-bar__item" href="#main" aria-current="page"><span class="md-nav-bar__indicator"><span class="md-icon md-icon--filled" aria-hidden="true">home</span></span><span class="md-nav-bar__label">Home</span></a>
+    <a class="md-nav-bar__item" href="#h-containers"><span class="md-nav-bar__indicator"><span class="md-icon" aria-hidden="true">newspaper</span></span><span class="md-nav-bar__label">News</span></a>
+    <a class="md-nav-bar__item" href="#h-table"><span class="md-nav-bar__indicator"><span class="md-icon" aria-hidden="true">calendar_month</span></span><span class="md-nav-bar__label">Calendar</span></a>
+  </nav>
+
+  <dialog class="md-dialog" id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-body">
+    <form method="dialog">
+      <h2 class="md-dialog__title" id="confirm-title">Delete this watchlist?</h2>
+      <p class="md-dialog__body" id="confirm-body">This removes the list and its 12 symbols. You can't undo it.</p>
+      <div class="md-dialog__actions">
+        <button class="md-btn md-btn--text" value="cancel">Cancel</button>
+        <button class="md-btn md-btn--text" value="delete">Delete</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="md-dialog" id="menu-dialog" aria-labelledby="menu-title">
+    <form method="dialog">
+      <h2 class="md-dialog__title" id="menu-title">Menu</h2>
+      <p class="md-dialog__body">A stand-in for a navigation drawer.</p>
+      <div class="md-dialog__actions"><button class="md-btn md-btn--text" value="close">Close</button></div>
+    </form>
+  </dialog>
+
+  <div class="md-snackbar-host" role="status" aria-live="polite">
+    <div class="md-snackbar" hidden>
+      <p class="md-snackbar__text">Watchlist deleted</p>
+      <button class="md-snackbar__action" type="button">Undo</button>
+    </div>
+  </div>
+
+  <script src="../dist/md3-expressive.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>
