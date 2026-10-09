@@ -12,7 +12,7 @@
   "bin": { "md3-expressive-mcp": "mcp-server/server.js" },
   "scripts": {
     "build:css": "node scripts/build-css.js",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test"
   },
   "keywords": ["material-design", "md3", "material-3-expressive", "claude-code", "mcp", "design-system", "accessibility"]
 }
