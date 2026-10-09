@@ -175,3 +175,9 @@ test('the demo server refuses paths outside the project', async () => {
     child.kill();
   }
 });
+
+test('every local image the README references exists', () => {
+  const refs = [...read('README.md').matchAll(/src="(docs\/[^"]+)"/g)].map(m => m[1]);
+  assert.ok(refs.length >= 2, 'README should show the demo screenshots');
+  for (const rel of refs) assert.ok(fs.existsSync(path.join(root, rel)), `README references missing image ${rel}`);
+});

@@ -7,6 +7,13 @@
 
 **A Material Design 3 Expressive kit for [Claude Code](https://claude.com/claude-code).** Claude stops guessing font sizes, hex colors and ARIA attributes, and starts building UI from tokens, tested components and a linter that checks its own work.
 
+<p align="center">
+  <img src="docs/images/demo-light.png" width="49%" alt="The kit demo page in light mode: buttons, chips, text fields, a switch, cards, a list, tabs and a data table.">
+  <img src="docs/images/demo-dark.png" width="49%" alt="The same demo page in dark mode, using the same color roles with no extra CSS.">
+</p>
+
+<p align="center"><sub>Every component in <code>examples/demo.html</code>, light and dark. Same markup, same stylesheet, only the theme changes.</sub></p>
+
 It is a plugin with three parts:
 
 | Part | What it is | Why it matters |
@@ -15,7 +22,7 @@ It is a plugin with three parts:
 | **18 ready-made components** | Copy-ready HTML, CSS and JS: app bars, buttons, dialogs, text fields, tables and more. | Claude adapts a proven, accessible component instead of inventing markup. |
 | **An MCP server** (plain Node, zero dependencies) | Eight tools Claude calls while it works: tokens, type roles, components, checklist, linter, contrast checker. | The rules are enforced by code, not by hoping the model remembers them. |
 
-Everything is checked by a test suite (48 tests, no network, no dependencies) and the kit passes its own linter.
+Everything is checked by a test suite (49 tests, no network, no dependencies) and the kit passes its own linter.
 
 > This is the practice distilled from building a real MD3 Expressive dashboard ([gmdmarkets.com](https://gmdmarkets.com)). It is not an official Google specification, and it checks rules, not taste: it cannot tell you a layout looks cramped.
 
@@ -134,7 +141,7 @@ Each component is one file in `mcp-server/data/components/` with `@@spec`, `@@a1
 ```bash
 node scripts/build-css.js      # writes dist/md3-expressive.css (tokens plus every component)
 node scripts/serve.js          # serves examples/demo.html on http://localhost:4173
-npm test                       # 48 tests
+npm test                       # 49 tests
 ```
 
 Link `dist/md3-expressive.css` and `dist/md3-expressive.js`, then copy markup from `mcp-server/data/components/*.cmp`. Open `examples/demo.html` to see everything.

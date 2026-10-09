@@ -13,4 +13,4 @@ First public release.
 - Linter with 23 rules for accessibility and token discipline, reporting line numbers and fixes.
 - `dist/md3-expressive.css` and `dist/md3-expressive.js`, built by `scripts/build-css.js`.
 - `examples/demo.html` showing every component in light and dark.
-- Test suite: 48 tests for contrast, tokens, components, linter, the MCP protocol, documentation examples, dist freshness and packaging.
+- Test suite: 49 tests for contrast, tokens, components, linter, the MCP protocol, documentation examples, dist freshness and packaging.
